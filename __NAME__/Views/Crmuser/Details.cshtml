@@ -1,0 +1,66 @@
+@{
+    ViewBag.page = "Crmuser";
+    ViewBag.Title = "Crmuser | Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<input type="hidden" id="refresh" value="no">
+
+<h2>Details</h2>
+<div data-bind="foreach: Crmusers">
+    <table class="table table">
+        <thead>
+            <tr>
+                <th>
+                    Crmuser
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td>UserName:</td>
+                <td>
+                    <label class='display-label' data-bind='text: UserName'></label>
+                </td>
+            </tr>
+            <tr>
+                <td>Salt:</td>
+                <td>
+                    <label class='display-label' data-bind='text: Salt'></label>
+                </td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td>
+                    <label class='display-label' data-bind='text: Name'></label>
+                </td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td>
+                    <label class='display-label' data-bind='text: Email'></label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a data-bind="attr: {href:'/Crmuser'}" class="btn btn-primary">Back</a>
+    <a data-bind="attr: {href:'/Crmuser/Edit/' + Id}" class="btn btn-primary">Edit</a>
+</div>
+
+<script>
+    require(["/Scripts/app/Crmuser.controller.js", "/Scripts/app/Crmuser.binding.js", 'utils'], function (crmuserController, appViewModel, utils) {
+        utils.spinner.show();
+        var promise = crmuserController.getCrmuser("@ViewBag.id");
+
+        promise.done(function (ajaxResult) {
+            var model = ajaxResult.crmuser;
+            
+            appViewModel.add(model);
+
+            utils.spinner.hide();
+        });
+    });
+</script>
+

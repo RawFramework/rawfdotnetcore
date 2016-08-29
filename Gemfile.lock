@@ -1,0 +1,26 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    jasmine (2.0.3)
+      jasmine-core (~> 2.0.0)
+      phantomjs
+      rack (>= 1.2.1)
+      rake
+    jasmine-core (2.0.2)
+    mini_portile (0.6.1)
+    nokogiri (1.6.4.1-x64-mingw32)
+      mini_portile (~> 0.6.0)
+    nokogiri (1.6.4.1-x86-mingw32)
+      mini_portile (~> 0.6.0)
+    phantomjs (1.9.7.1)
+    rack (1.5.2)
+    rake (0.8.7)
+
+PLATFORMS
+  x64-mingw32
+  x86-mingw32
+
+DEPENDENCIES
+  jasmine
+  nokogiri
+  rake (= 0.8.7)

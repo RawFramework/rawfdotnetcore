@@ -1,0 +1,78 @@
+@{
+    ViewBag.page = "Crmuser";
+    ViewBag.Title = "Crmuser | Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-header text-center">
+    <h2>Edit</h2>
+</div>
+<form id="edit_crmuser_form" method="post" class="form-horizontal crmuser_form" action="Edit" role="form" data-bind="foreach: Crmusers">
+    
+                    <div class='form-group'>
+                        <div class='col-sm-4'>
+                            <input type='text' name='Id' data-bind='value: Id' hidden/>
+                        </div>
+                    </div>
+                    
+                    <div class='form-group'>
+                        <label class='col-sm-2 control-label'>UserName</label>
+                        <div class='col-sm-4'>
+                            <input type='text' class='form-control' name='UserName' data-bind='value: UserName'/>
+                        </div>
+                    </div>
+                    
+                    <div class='form-group'>
+                        <label class='col-sm-2 control-label'>Password</label>
+                        <div class='col-sm-4'>
+                            <input type='text' class='form-control' name='Password' data-bind='value: Password'/>
+                        </div>
+                    </div>
+                    
+                    <div class='form-group'>
+                        <label class='col-sm-2 control-label'>Salt</label>
+                        <div class='col-sm-4'>
+                            <input type='text' class='form-control' name='Salt' data-bind='value: Salt'/>
+                        </div>
+                    </div>
+                    
+                    <div class='form-group'>
+                        <label class='col-sm-2 control-label'>Name</label>
+                        <div class='col-sm-4'>
+                            <input type='text' class='form-control' name='Name' data-bind='value: Name'/>
+                        </div>
+                    </div>
+                    
+                    <div class='form-group'>
+                        <label class='col-sm-2 control-label'>Email</label>
+                        <div class='col-sm-4'>
+                            <input type='text' class='form-control' name='Email' data-bind='value: Email'/>
+                        </div>
+                    </div>
+                    
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <!-- Do NOT use name="submit" or id="submit" for the Submit button -->
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-danger" onclick="window.history.go(-1)">Cancel</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    require(["/Scripts/app/Crmuser.controller.js", "/Scripts/app/Crmuser.binding.js", "/Scripts/app/Crmuser.validate.js", 'utils'], function (crmuserController, appViewModel, formValidator, utils) {
+        utils.spinner.show();
+        var promise = crmuserController.getCrmuser("@ViewBag.id");
+        promise.done(function (ajaxResult) {
+            var model = ajaxResult.crmuser;
+              
+            appViewModel.add(model);
+            formValidator.initViewModel(appViewModel);
+            formValidator.initValidator();
+
+            utils.spinner.hide();
+        });
+    });
+</script>
