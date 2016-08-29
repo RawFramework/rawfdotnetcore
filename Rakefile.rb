@@ -55,6 +55,13 @@ task :rebuild => :rake_dot_net_initialize do
   @sln.rebuild @solution_name 
 end
 
+desc "creates a new app, downloads the template from github and initialize the app"
+task :new, [:appName]   do
+  puts "download the template"
+  puts "replacing tokens"
+  puts "get app packages"
+end
+
 desc "deploys MVC app to directory that iis express will use to run"
 task :deploy => :rake_dot_net_initialize do 
   @web_deploy.deploy @mvc_project_directory, @website_deploy_directory
