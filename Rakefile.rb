@@ -66,15 +66,26 @@ task :new do
   end
   puts "inflating template"
   Zip::File.open(filename) do |zip_file|
-  puts "#{filename}"
+  
+  toRepalce = '__NAME__'
   # Handle entries one by one
   zip_file.each do |entry|
-      entry.extract("#{appname}/#{entry.name}")
+      unzipped =entry.name.gsub(toRepalce,appname)
+      entry.extract("#{appname}/#{unzipped}")
+      if(entry.size >0) then
+          # load the file as a string
+        data = File.read("#{appname}/#{unzipped}") 
+        # globally substitute "install" for "latest"
+        filtered_data = data.gsub(toRepalce,appname) 
+        # open the file for writing
+        File.open("#{appname}/#{unzipped}", "w") do |f|
+          f.write(filtered_data)
+        end
+      end
+      
     end
   end
   #at this point the zip file has been downloaded, uncompress and delete it
-
-  puts "replacing tokens"
   puts "get app packages"
 end
 
