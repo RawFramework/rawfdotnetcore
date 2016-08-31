@@ -7,7 +7,11 @@ require 'net/http'
 require 'yaml'
 require './scaffold.rb'
 require 'jasmine'
+require 'uri'
+require 'rubygems'
+require 'zip'
 load 'jasmine/tasks/jasmine.rake'
+
 
 
 task :rake_dot_net_initialize do
@@ -44,6 +48,35 @@ end
 desc "builds and deploys website to directories iis express will use to run app"
 task :default => [:build, :deploy]
 
+desc "creates a new app, downloads the template from github and initialize the app"
+task :new do
+  #ask for appName
+  puts "Enter app name"
+  appname = STDIN.gets.chomp
+  filename = "#{appname}/#{appname}.zip"
+  #create the folder
+  Dir.mkdir appname
+  puts "downloading template"
+  #for now the template is hosted on the github public pages
+  Net::HTTP.start("rawframework.github.io") do |http|
+    resp = http.get("/RawTemplate/rawcore.zip")
+    open(filename, "wb") do |file|
+        file.write(resp.body)
+    end
+  end
+  puts "inflating template"
+  Zip::File.open(filename) do |zip_file|
+  puts "#{filename}"
+  # Handle entries one by one
+  zip_file.each do |entry|
+      entry.extract("#{appname}/#{entry.name}")
+    end
+  end
+  #at this point the zip file has been downloaded, uncompress and delete it
+
+  puts "replacing tokens"
+  puts "get app packages"
+end
 
 desc "builds the solution"
 task :build => :rake_dot_net_initialize do
@@ -55,12 +88,7 @@ task :rebuild => :rake_dot_net_initialize do
   @sln.rebuild @solution_name 
 end
 
-desc "creates a new app, downloads the template from github and initialize the app"
-task :new, [:appName]   do
-  puts "download the template"
-  puts "replacing tokens"
-  puts "get app packages"
-end
+
 
 desc "deploys MVC app to directory that iis express will use to run"
 task :deploy => :rake_dot_net_initialize do 
