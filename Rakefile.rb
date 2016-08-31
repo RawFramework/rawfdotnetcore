@@ -56,7 +56,7 @@ task :new do
   filename = "#{appname}/#{appname}.zip"
   #create the folder
   Dir.mkdir appname
-  puts "downloading template"
+  puts "Downloading template......"
   #for now the template is hosted on the github public pages
   Net::HTTP.start("rawframework.github.io") do |http|
     resp = http.get("/RawTemplate/rawcore.zip")
@@ -64,7 +64,7 @@ task :new do
         file.write(resp.body)
     end
   end
-  puts "inflating template"
+  puts "Inflating template......"
   Zip::File.open(filename) do |zip_file|
   
   toRepalce = '__NAME__'
@@ -86,7 +86,9 @@ task :new do
     end
   end
   #at this point the zip file has been downloaded, uncompress and delete it
-  puts "get app packages"
+  puts "Get app packages......"
+  
+  puts "Building......"
 end
 
 desc "builds the solution"
