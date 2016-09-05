@@ -19,7 +19,7 @@ end
 namespace :gen do
 
 	desc "creates models for each table in the data base, example: rake gen:fullDbModels"
-	task :full_db_models, [] => :rake_dot_net_initialize do |t, args|
+	task :full_db_models, [] => :rake_dot_net_initialize, :build do |t, args|
 		system("XmlGenerator/Generator.exe Model fulldb #{@mvc_project_directory}")
 		Dir.glob('*.xml') do |xml_file|
 		  file_name = File.basename(xml_file, File.extname(xml_file))
@@ -59,7 +59,7 @@ namespace :gen do
 	end	
 
 	desc "Adds a new api controller, example: rake gen:api[User]"
-	task :api, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+	task :api, [:model] => [:build, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
 		model_name = args[:model]
 		file_name = model_name.ext("xml")
@@ -83,7 +83,7 @@ namespace :gen do
 	end	
 
 	desc "Adds a new controller, example: rake gen:controller[User]"
-	task :controller, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+	task :controller, [:model] => [:build, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:controller[User]" if args[:model].nil?
 		model_name = args[:model]
 		file_name = model_name.ext("xml")
@@ -104,7 +104,7 @@ namespace :gen do
 	end	
 
 	desc "Adds a new repository, example: rake gen:repository[User]"
-	task :repository, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+	task :repository, [:model] => [:build, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:repository[User]" if args[:model].nil?
 		model_name = args[:model]
 		file_name = model_name.ext("xml")
@@ -127,7 +127,7 @@ namespace :gen do
 	desc "Adds a new view, you can choose to use bs_grid plug in for index view with a optional third parameter <true>, 
 	example: rake gen:view[Entity,<Edit, Create, Details, Index>,<true>]. \nTo create partial views set a extra parameter 
 	partial=true, example: rake gen:view[User,Edit] partial=true"
-	task :view, [:model, :type, :use_bs_grid] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+	task :view, [:model, :type, :use_bs_grid] => [:build, :create_xml_file] do |t, args|
 		raise "name and view type parameters are required, example: rake gen:view[Edit,User]" if args[:model].nil? || args[:type].nil?
 		@use_partial_views = ENV["partial"] == "true"
 
@@ -169,24 +169,9 @@ namespace :gen do
 		end
 	end	
 
-	desc "Adds a new test controller file, example: rake gen:test[User]"
-	task :test, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
-		raise "name parameter required, example: rake gen:test[User]" if args[:model].nil?
-		model_name = args[:model]
-		file_name = model_name.ext("xml")
-
-		verify_file_name file_name
-
- 		xml_file = File.open(file_name)
- 		nkg_xml_model = Nokogiri::XML(xml_file)
-		
- 		main_model = nkg_xml_model.xpath("//entity").first
-
-		create_tests_controller_template main_model
-	end	
 
 	desc "adds a CRUD scaffold, example: rake gen:crudFor[Entity]. \nTo create partial views set a extra parameter partial=true, example: rake gen:crudFor[Entity] partial=true"
-	task :crudFor, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+	task :crudFor, [:model] => [:build, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:crudFor[User]" if args[:model].nil?
 		@use_partial_views = ENV["partial"] == "true"
 
@@ -213,9 +198,7 @@ namespace :gen do
 
 		create_views_templates main_model
 
-  		create_js_templates main_model
-
-		create_tests_controller_template main_model
+  		create_js_templates main_model	
 
 		xml_file.close
 		#Delete the xml
@@ -226,7 +209,7 @@ namespace :gen do
 	end
 
 	desc "adds javascript file to your mvc project, example: rake gen:script[index]"
-	task :script, [:name] => :rake_dot_net_initialize do |t, args|
+	task :script, [:name] => :build do |t, args|
 		raise "js name required, example: rake gen:script[index]" if args[:name].nil?
 
 		verify_file_name args[:name]
@@ -360,15 +343,15 @@ namespace :gen do
 
 	def create_js_templates model
 		name = model['name']
-		folder "Scripts/app"
+		folder "wwwroot/js/app"
 
-		save js_binding_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.binding.js"
+		save js_binding_template(model), "#{@mvc_project_directory}/wwwroot/js/app/#{name}.binding.js"
 		add_js_node "#{name}.binding"
 
-		save js_model_validate_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.validate.js"
+		save js_model_validate_template(model), "#{@mvc_project_directory}/wwwroot/js/app/#{name}.validate.js"
 		add_js_node "#{name}.validate"
 
-		save js_controller_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.controller.js"
+		save js_controller_template(model), "#{@mvc_project_directory}/wwwroot/js/app/#{name}.controller.js"
 		add_js_node "#{name}.controller"
 	end
 
@@ -390,7 +373,7 @@ namespace :gen do
 		name = model['name']
 		folder "Scripts/app"
 
-		save js_bs_grid_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.grid.js"
+		save js_bs_grid_template(model), "#{@mvc_project_directory}/wwwroot/js/app/#{name}.grid.js"
 		add_js_node "#{name}.grid"
 	end
 

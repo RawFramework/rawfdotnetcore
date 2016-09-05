@@ -2,7 +2,7 @@ def view_index_template model, use_bs_grid = false
     name = model['name']
     name_downcase = name.downcase
 
-    grid_file = ", '/Scripts/app/#{name}.grid.js'"
+    grid_file = ", '/wwwroot/js/app/#{name}.grid.js'"
     grid_container = "<div id='bs_grid_#{name_downcase}'></div>"
 
 return <<template
@@ -18,7 +18,7 @@ return <<template
     <a href="/#{name}/Create" class="btn btn-primary">Add</a>
         
     <script>
-        require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'moment', 'utils', 'underscore' #{grid_file if use_bs_grid}], function (#{name_downcase}Controller, appViewModel, moment, utils, _) {
+        require(["/wwwroot/js/app/#{name}.controller.js", "/wwwroot/js/app/#{name}.binding.js", 'moment', 'utils', 'underscore' #{grid_file if use_bs_grid}], function (#{name_downcase}Controller, appViewModel, moment, utils, _) {
             utils.spinner.show();
             var promise = #{name_downcase}Controller.get#{name}s();
 

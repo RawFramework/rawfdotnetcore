@@ -31,7 +31,7 @@ return <<template
     </div>
 
     <script>
-        require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'utils'], function (#{name_downcase}Controller, appViewModel, utils) {
+        require(["/wwwroot/js/app/#{name}.controller.js", "/wwwroot/js/app/#{name}.binding.js", 'utils'], function (#{name_downcase}Controller, appViewModel, utils) {
             utils.spinner.show();
             var promise = #{name_downcase}Controller.get#{name}("@ViewBag.id");
 

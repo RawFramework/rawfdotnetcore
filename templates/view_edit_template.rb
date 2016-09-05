@@ -24,7 +24,7 @@ return <<template
     </form>
 
     <script>
-        require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js", 'utils','typeahead'], function (#{name_downcase}Controller, appViewModel, formValidator, utils,type) {
+        require(["/wwwroot/js/app/#{name}.controller.js", "/wwwroot/js/app/#{name}.binding.js", "/wwwroot/js/app/#{name}.validate.js", 'utils','typeahead'], function (#{name_downcase}Controller, appViewModel, formValidator, utils,type) {
             utils.spinner.show();
             var promise = #{name_downcase}Controller.get#{name}("@ViewBag.id");
             promise.done(function (ajaxResult) {

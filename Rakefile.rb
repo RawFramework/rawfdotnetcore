@@ -10,6 +10,7 @@ require 'jasmine'
 require 'uri'
 require 'rubygems'
 require 'zip'
+require 'colorize'
 load 'jasmine/tasks/jasmine.rake'
 
 
@@ -26,7 +27,7 @@ task :rake_dot_net_initialize do
   @solution_name_sans_extension = "#{ yml["solution_name"] }"
   @mvc_project_directory = yml["mvc_project"]
   @database_name = yml["database_name"]
-
+  @project_name = yml["solution_name"]
   @iis_express = IISExpress.new
   @iis_express.execution_path = yml["iis_express"]
   @web_deploy = WebDeploy.new
@@ -43,20 +44,21 @@ task :rake_dot_net_initialize do
   @file_sync.source = @mvc_project_directory
   @file_sync.destination = @website_deploy_directory
   @sln.msbuild_path = "C:\\Program Files (x86)\\MSBuild\\12.0\\bin\\amd64\\msbuild.exe"
+  #build?
 end
 
 desc "builds and deploys website to directories iis express will use to run app"
-task :default => [:build, :deploy]
+task :default => [:build]
 
 desc "creates a new app, downloads the template from github and initialize the app"
-task :new do
+task :new  do
   #ask for appName
-  puts "Enter app name"
+  puts "Enter app name(case sensitive):".colorize(:cyan)
   appname = STDIN.gets.chomp
   filename = "#{appname}/#{appname}.zip"
   #create the folder
   Dir.mkdir appname
-  puts "Downloading template......"
+  puts "Downloading template......".colorize(:light_green)
   #for now the template is hosted on the github public pages
   Net::HTTP.start("rawframework.github.io") do |http|
     resp = http.get("/RawTemplate/rawcore.zip")
@@ -64,7 +66,7 @@ task :new do
         file.write(resp.body)
     end
   end
-  puts "Inflating template......"
+  puts "Inflating template......".colorize(:light_green)
   Zip::File.open(filename) do |zip_file|
   
   toRepalce = '__NAME__'
@@ -86,51 +88,35 @@ task :new do
     end
   end
   #at this point the zip file has been downloaded, uncompress and delete it
-  puts "Get app packages......"
-  
-  puts "Building......"
+  puts "Get app packages......".colorize(:light_green)
+  sh "dotnet restore #{appname}/project.json"
+  puts "Building......".colorize(:light_green)
+  sh "dotnet build #{appname}/project.json"
+  puts "Done!".colorize(:light_blue)
+  puts "Type rawf help for a tutorial and options".colorize(:ligh_yellow)
 end
 
 desc "builds the solution"
 task :build => :rake_dot_net_initialize do
-  @sln.build @solution_name 
+  #get packages
+  sh "dotnet restore #{@project_name}/project.json"
+  #run the app
+  sh "dotnet build #{@project_name}/project.json" 
 end
 
-desc "rebuilds the solution"
-task :rebuild => :rake_dot_net_initialize do
-  @sln.rebuild @solution_name 
+desc "run the application"
+task :run => :rake_dot_net_initialize do
+  sh "dotnet run --project #{@project_name}/project.json" 
 end
 
 
-
-desc "deploys MVC app to directory that iis express will use to run"
-task :deploy => :rake_dot_net_initialize do 
-  @web_deploy.deploy @mvc_project_directory, @website_deploy_directory
-end
-
-desc "start iis express for MVC app"
-task :server => :rake_dot_net_initialize do
-  sh @iis_express.command @website_deploy_directory, @website_port
-end
-
-desc "synchronizes a file specfied to the website deployment directory"
-task :sync, [:file] => :rake_dot_net_initialize do |t, args|
-  @file_sync.sync args[:file]
-end
 
 desc "Show help"
 task :help do
   sh "start help\\index.html"
 end
 
-desc "run nspec tests"
-task :tests => :build do
-  puts "Could not find the NSpec test runner at location #{ @test_runner_path }, update your dev.yml to point to the correct runner location." if !File.exists? @test_runner_path
 
-  puts "if you have any failures, you can run 'rake stacktrace:tests' for a nice stacktrace visualization"
-
-  sh @test_runner_command if File.exists? @test_runner_path
-end
 
 desc "run fuzz test using gremlins.js, optionally you can pass the next parameters: controller, view and id. rake gremlins[user,edit,5]"
 task :gremlins, :controller, :view, :id do |t, args|
