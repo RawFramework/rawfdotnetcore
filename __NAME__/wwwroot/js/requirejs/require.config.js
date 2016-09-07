@@ -1,5 +1,5 @@
 ﻿var require = {
-    baseUrl: '/wwwroot/js',
+    baseUrl: '/js',
     paths: {
         jquery: 'jquery/jquery',
         bootstrap: 'bootstrap/bootstrap',

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -9,17 +9,17 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
     <title>@ViewBag.Title</title>
-    <link href="~/wwwroot/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link href="~/wwwroot/lib/bootstrap-validator/bootstrapValidator.css" rel="stylesheet">
-    <link href="~/wwwroot/lib//bootstrap-datepicker/bootstrap-datetimepicker.css" rel="stylesheet">
-    <link href="~/wwwroot/lib/jquery_ui/jquery-ui.min.css" rel="stylesheet">
-    <link href="~/wwwroot/lib/bs_pagination/jquery.bs_pagination.min.css" rel="stylesheet">
-    <link href="~/wwwroot/lib/jui_filter/jquery.jui_filter_rules.bs.min.css" rel="stylesheet">
-    <link href="~/wwwroot/lib/bs_grid/jquery.bs_grid.min.css" rel="stylesheet">
-    <link href="~/wwwroot/css/Site.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="~/lib/bootstrap-validator/bootstrapValidator.css" rel="stylesheet">
+    <link href="~/lib/bootstrap-datepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="~/lib/jquery_ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="~/lib/bs_pagination/jquery.bs_pagination.min.css" rel="stylesheet">
+    <link href="~/lib/jui_filter/jquery.jui_filter_rules.bs.min.css" rel="stylesheet">
+    <link href="~/lib/bs_grid/jquery.bs_grid.min.css" rel="stylesheet">
+    <link href="~/css/Site.css" rel="stylesheet" />
 
-    <script src="~/wwwroot/js/requirejs/require.config.js"></script>
-    <script src="~/wwwroot/js/requirejs/require.js"></script>
+    <script src="~/js/requirejs/require.config.js"></script>
+    <script src="~/js/requirejs/require.js"></script>
     
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -49,14 +49,14 @@
                     <span class="icon-bar"></span>
 
                 </button>
-                <a class="navbar-brand" href="/" style="margin-top:-23px"><img src="~/Content/RAWlogo3.png" style="border:none;"/></a>
+                <a class="navbar-brand" href="/" style="margin-top:-23px"><img src="~/images/RAWlogo3.png" style="border:none;"/></a>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li @if (ViewBag.page == "Home") { <text> class=" active" </text>   ; }><a href="/">Home</a></li>
                         <!--toplinks-->
                     </ul>
                     
-                    @if (Request.IsAuthenticated)
+                    @if (User.Identity.IsAuthenticated)
                     {
                         using (Html.BeginForm("LogOff", "SignOn", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                         {
@@ -98,7 +98,7 @@
 
 @*Gremlins configuration, only runs when a query string is set "<path>?gremlins=true"
     used for fuzz testing*@
-@if (!Request.QueryString["gremlins"].IsNullOrWhiteSpace() || Request.Cookies["gremlins"] != null)
+@if (!Context.Request.Query.ContainsKey("gremlins") || Context.Request.Cookies["gremlins"] != null)
 {
     <script type="text/javascript">
         require(['gremlins'], function (gremlins) {
