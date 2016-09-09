@@ -11,11 +11,14 @@ require 'uri'
 require 'rubygems'
 require 'zip'
 require 'colorize'
+#require 'fileutils'
 load 'jasmine/tasks/jasmine.rake'
 
 
 
 task :rake_dot_net_initialize do
+  #throw error if we are not in the root of the folder
+  raise "You are not in the root folder of a RAW Framework Core project!!" if not File.exist?('dev.yml')
   yml = YAML::load File.open("dev.yml")
   @website_port = yml["website_port"]
   @website_deploy_directory = yml["website_deploy_directory"]
@@ -74,7 +77,7 @@ task :new  do
   zip_file.each do |entry|
       unzipped =entry.name.gsub(toRepalce,appname)
       entry.extract("#{appname}/#{unzipped}")
-      if(entry.size >0) then
+      if !(unzipped.include? ".dll") && entry.size >0 then
           # load the file as a string
         data = File.read("#{appname}/#{unzipped}") 
         # globally substitute "install" for "latest"
@@ -89,11 +92,13 @@ task :new  do
   end
   #at this point the zip file has been downloaded, uncompress and delete it
   puts "Get app packages......".colorize(:light_green)
-  sh "dotnet restore #{appname}/project.json"
+  sh "dotnet restore #{appname}/#{appname}/project.json"
   puts "Building......".colorize(:light_green)
-  sh "dotnet build #{appname}/project.json"
+  sh "dotnet build #{appname}/#{appname}/project.json"
   puts "Done!".colorize(:light_blue)
   puts "Type rawf help for a tutorial and options".colorize(:ligh_yellow)
+  #delete the zip file
+  File.delete filename
 end
 
 desc "builds the solution"

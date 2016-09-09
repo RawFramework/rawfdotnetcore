@@ -56,22 +56,7 @@
                         <!--toplinks-->
                     </ul>
                     
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        using (Html.BeginForm("LogOff", "SignOn", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
-                            </ul>
-                        }
-                    }
-                    else
-                    {
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>@Html.ActionLink("SignUp", "Create", "Crmuser", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-                        </ul>
-                    }
+                    @await Html.PartialAsync("_LoginPartial")
                 </div>
                 
                 <!--/.nav-collapse -->
@@ -92,7 +77,7 @@
     <div id="window-resizer-tooltip" style="display: none;">
         <a href="#" title="Edit settings" style="background-image: url(chrome-extension://kkelicaakdanhinjdeammmilcgefonfh/images/icon_19.png);"></a><span class="tooltipTitle">Window size: </span><span class="tooltipWidth" id="winWidth">1280</span> x <span class="tooltipHeight" id="winHeight">1024</span><br><span class="tooltipTitle">Viewport size: </span><span class="tooltipWidth" id="vpWidth">1280</span> x <span class="tooltipHeight" id="vpHeight">516</span>
     </div>
-
+    @RenderSection("scripts", required: false)
 </body>
 </html>
 

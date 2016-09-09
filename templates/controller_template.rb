@@ -12,14 +12,9 @@ def controller_template model, keytype, entityNameSpace, root_namespace
 return <<template
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Needletail.DataAccess;
-using System.Configuration;
-using System.Web.Script.Serialization;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using #{@solution_name_sans_extension}.Repositories;
 using #{entityNameSpace};
 #{root_namespace}

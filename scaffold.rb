@@ -1,6 +1,7 @@
 begin
 	require 'nokogiri'
 	require 'rake'
+	require 'fileutils'
 	Dir[File.dirname(__FILE__) + '/templates/*.rb'].each {|file| require file }
 rescue LoadError
 	puts "============ note ============="
@@ -17,10 +18,10 @@ rescue LoadError
 end
 
 namespace :gen do
-
 	desc "creates models for each table in the data base, example: rake gen:fullDbModels"
-	task :full_db_models, [] => :rake_dot_net_initialize, :build do |t, args|
-		system("XmlGenerator/Generator.exe Model fulldb #{@mvc_project_directory}")
+	task :full_db_models, [] => :rake_dot_net_initialize do |t, args|
+		system("cd XmlGenerator&dotnet Generator.dll Model fulldb #{@mvc_project_directory}")
+		FileUtils.mv Dir.glob('XmlGenerator/*.xml'), "."
 		Dir.glob('*.xml') do |xml_file|
 		  file_name = File.basename(xml_file, File.extname(xml_file))
 			Rake::Task['gen:model'].invoke(file_name)
@@ -35,7 +36,8 @@ namespace :gen do
 		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
-		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}")
+		system("cd XmlGenerator&dotnet Generator.dll Views #{model_name} #{@mvc_project_directory}")
+		FileUtils.mv Dir.glob('XmlGenerator/*.xml'), "."
 	end
 
 	desc "Adds a new model from an xml, example: rake gen:model[User]"
@@ -46,8 +48,8 @@ namespace :gen do
 
 		verify_file_name file_name
 
-		system("XmlGenerator/Generator.exe Model #{model_name} #{@mvc_project_directory}")
-
+		system("cd XmlGenerator&dotnet Generator.dll Model #{model_name} #{@mvc_project_directory}")
+		FileUtils.mv Dir.glob('XmlGenerator/*.xml'), "."
  		xml_file = File.open(file_name)
  		nkg_xml_model = Nokogiri::XML(xml_file)
 		
@@ -244,32 +246,36 @@ namespace :gen do
 	end
 
 	def add_compile_node folder, name, project = nil
-		to_open = project || proj_file
-		doc = Nokogiri::XML(open(to_open))
-		if folder == :root
-			add_include doc, :Compile, "#{name}.cs"
-		else
-			add_include doc, :Compile, "#{folder.to_s}\\#{name}.cs"
-		end
-		File.open(to_open, "w") { |f| f.write(doc) }
+		#this is no logner needed for dotnet core projects
+		#to_open = project || proj_file
+		#doc = Nokogiri::XML(open(to_open))
+		#if folder == :root
+		#	add_include doc, :Compile, "#{name}.cs"
+		#else
+		#	add_include doc, :Compile, "#{folder.to_s}\\#{name}.cs"
+		#end
+		#File.open(to_open, "w") { |f| f.write(doc) }
 	end
 
 	def add_cshtml_node folder, name
-		doc = Nokogiri::XML(open(proj_file))
-		add_include doc, :Content, "Views\\#{folder}\\#{name}.cshtml"
-		File.open(proj_file, "w") { |f| f.write(doc) }
+		#this is no logner needed for dotnet core projects
+		#doc = Nokogiri::XML(open(proj_file))
+		#add_include doc, :Content, "Views\\#{folder}\\#{name}.cshtml"
+		#File.open(proj_file, "w") { |f| f.write(doc) }
 	end
 	
 	def add_js_node name
-		doc = Nokogiri::XML(open(proj_file))
-		add_include doc, :Content, "Scripts\\app\\#{name}.js"
-		File.open(proj_file, "w") { |f| f.write(doc) }
+		#this is no logner needed for dotnet core projects
+		#doc = Nokogiri::XML(open(proj_file))
+		#add_include doc, :Content, "Scripts\\app\\#{name}.js"
+		#File.open(proj_file, "w") { |f| f.write(doc) }
 	end
 
 	def add_include doc, type, value
-		if doc.xpath("//xmlns:#{type.to_s}[@Include='#{value}']").length == 0
-			doc.xpath("//xmlns:ItemGroup[xmlns:#{type.to_s}]").first << "<#{type.to_s} Include=\"#{value}\" />"
-		end
+		#this is no logner needed for dotnet core projects
+		#if doc.xpath("//xmlns:#{type.to_s}[@Include='#{value}']").length == 0
+		#	doc.xpath("//xmlns:ItemGroup[xmlns:#{type.to_s}]").first << "<#{type.to_s} Include=\"#{value}\" />"
+		#end
 	end
 
 	def proj_file
@@ -363,10 +369,11 @@ namespace :gen do
 	end
 
 	def create_tests_controller_template model
-		name = model['name']
-		file_name = "#{name}Controller_spec"
-		save tests_controller_template(model), "#{@test_project}/#{file_name}.cs"
-		add_compile_node :root, file_name, proj_tests_file
+		#test project is not implemented yet
+		#name = model['name']
+		#file_name = "#{name}Controller_spec"
+		#save tests_controller_template(model), "#{@test_project}/#{file_name}.cs"
+		#add_compile_node :root, file_name, proj_tests_file
 	end
 
 	def create_js_bs_grid_template model

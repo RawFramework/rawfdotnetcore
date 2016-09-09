@@ -5,7 +5,6 @@ return <<template
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Needletail.DataAccess.Attributes;
 using DataAccess.Scaffold.Attributes;
 
