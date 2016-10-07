@@ -28,6 +28,7 @@ namespace Generator
         static Dictionary<string, List<object>> vmAttributes = new Dictionary<string, List<object>>();
         static DirectoryInfo di;
         static List<string> tableNames = new List<string>();
+        static bool ISViewModel;
         /// <summary>
         /// This must run from the root folder of the project
         /// </summary>
@@ -324,6 +325,7 @@ namespace Generator
             var vm = entityType.GetTypeInfo().GetCustomAttribute(typeof(NeedletailViewModel), true);
             if (vm == null) //is an entity
             {
+                ISViewModel = false;
                 FileStream fs = new FileStream(entityName + ".xml", FileMode.Create);
                 using (XmlWriter writer = XmlWriter.Create(fs))
                 {
@@ -339,6 +341,7 @@ namespace Generator
             }
             else  // is a view model
             {
+                ISViewModel = true;
                 var props = entityType.GetProperties();
                 //It's a view model, get all  the Relation and UI attributes first for all the properties
                 foreach (var p in props)
@@ -362,6 +365,8 @@ namespace Generator
                     var ind = props.Where(p => vmAttributes.ContainsKey(p.Name));
                     foreach (var i in ind)
                         WriteEntity(i.PropertyType, writer, i.Name);
+                    //turn off the viewmodel flag
+                    ISViewModel = false;
 
                     //write all the SelectFrom
                     var attribs = new List<object>();
@@ -461,6 +466,7 @@ namespace Generator
                     key = key.PropertyType.GetProperties().FirstOrDefault(p => p.GetCustomAttributes(typeof(TableKeyAttribute), false) != null);
 
                 writer.WriteAttributeString("primaryKeyType", key.PropertyType.Name);
+                writer.WriteAttributeString("isViewModel", ISViewModel.ToString());
 
                 if (!string.IsNullOrWhiteSpace(customAttrName) && !string.IsNullOrWhiteSpace(customAttrVal))
                 {

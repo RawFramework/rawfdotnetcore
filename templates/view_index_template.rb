@@ -91,7 +91,7 @@ return <<template
                 #{get_labels_index model}
                 <td><a data-bind="attr: {href: '/#{name}/Details/' + Id}">Details</a></td>
                 <td><a data-bind="attr: {href: '/#{name}/Edit/' + Id}">Edit</a></td>
-                <td><a data-bind="click: $parent.remove">Remove</a></td>
+                <td><a data-bind="click: $parent.remove" href="javascript:void(0);">Remove</a></td>
             </tr>
         </tbody>
     </table>

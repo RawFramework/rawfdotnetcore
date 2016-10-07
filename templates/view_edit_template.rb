@@ -73,8 +73,10 @@ def get_fields_edit model
     elements = model.at_xpath("fields").elements
     fields = ""
     entity_name = ""
-
-    if elements.xpath("//entity").length > 1
+    #if is a viewmodel
+    #if elements.xpath("//entity").length > 1
+    isVM =elements.xpath("//entity").first['isViewModel'] 
+    if isVM == 'True' || isVM == 'true'
         entity_name = elements.xpath("//entity").first['name'] + "."
     end
 

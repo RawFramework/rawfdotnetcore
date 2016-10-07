@@ -64,7 +64,8 @@ def get_fields model
     fields = ""
     entity_name = ""
 
-    if elements.xpath("//entity").length > 1
+    isVM =elements.xpath("//entity").first['isViewModel'] 
+    if isVM == 'True' || isVM == 'true'
         entity_name = elements.xpath("//entity").first['name'] + "."
     end
 

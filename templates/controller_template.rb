@@ -4,7 +4,9 @@ def controller_template model, keytype, entityNameSpace, root_namespace
     viewModelSufix = ""    
     useRepositories = true
 
-    if model.xpath("//entity").length > 1
+    isVM =model.xpath("//entity").first['isViewModel'] 
+    if isVM == 'True' || isVM == 'true'
+        @is_view_model = true
         viewModelSufix = "ViewModel"    
         useRepositories = false
     end
@@ -253,7 +255,8 @@ def init_view_model model
     name_downcase = name.downcase
     result = ""
 
-    if model.xpath("//entity").length > 1
+    isVM =model.xpath("//entity").first['isViewModel'] 
+    if isVM == 'True' || isVM == 'true'
         result = "
             var #{name_downcase} = new #{name}ViewModel();
             await #{name_downcase}.FillDataAsync(primaryKey: id);"

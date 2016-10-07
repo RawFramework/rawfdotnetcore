@@ -50,8 +50,8 @@ end
 
 def get_labels entity, elements
     labels = ""
-
-    if entity.xpath("//entity").length > 1
+    isVM =elements.xpath("//entity").first['isViewModel'] 
+    if isVM == 'True' || isVM == 'true'
         if entity.attribute("objectName")
             entity_name = "#{entity.attribute('objectName')}."
         else
