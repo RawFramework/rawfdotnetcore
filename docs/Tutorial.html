@@ -1,13 +1,18 @@
-<html><head>
+<!DOCTYPE html>
+<html>
+  
+  <head>
     <meta charset="utf-8">
     <title>RAW Framework Help | documentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href="Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="Content/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="Content/jquery.min.js"></script>
     <script type="text/javascript" src="Content/bootstrap.min.js"></script>
-  </head><body>
+  </head>
+  
+  <body>
     <div class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="navbar-header">
@@ -16,7 +21,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
-          <a class="navbar-brand" href="index.html" style="margin-top:-23px"><img src="images/rawlogo3.png" style="border:none;"></a>
+          <a class="navbar-brand" href="index.html" style="margin-top:-23px"><img src="images/rawlogo3.png" style="border:none;"/></a>
           <a class="navbar-brand" href="index.html">RAW Framework</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -36,8 +41,8 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12" style="">
-            <p style="">
+          <div class="col-md-12" style="" draggable="true">
+            <p style="" contenteditable="true">
               <br>
               <br>It's very importanxt that you understand the libraries used by RAW Framework
               otherwise you will only see the framework in action but you will not be
@@ -55,27 +60,25 @@
               application, it's also required that you already have a database schema
               defined, by convention the name of your new application should match the
               name of the database, if you don't want it that way, you can modify all
-              the conection strings present in two
-              <code>appsettings.json</code>files located in the following folders:.
+              the conection strings.
+              <br>
+              <br>
+              <br>All other similar frameworks forces you to have your model in the same
+              project that your website, with RAW Framework you can have a separated
+              proyect with all your entities.
+              <br>
+              <br>
+              <br>Another things that makes RAW framework different, is the it can generate
+              code automatically for N:N and 1:N relationships without any problems and
+              lets you define how those relationships occur in the database.&nbsp;
+              <br>
               <br>
             </p>
-            <ul>
-              <li>[ApplicationName].Web</li>
-              <li>Generator</li>
-            </ul>
-            <br>All other similar frameworks forces you to have your model in the same
-            project that your website, with RAW Framework you can have a separated
-            proyect with all your entities.
-            <br>
-            <br>Another thing that makes RAW framework different, is the it can generate
-            code automatically for N:N and 1:N relationships without any problems and
-            lets you define how those relationships occur in the database.&nbsp;
-            <br>
-            <p></p>
             <h3 draggable="true">Where to start</h3>
-            <p>Before you begin, be sure to have all the <a href="prerequisites.html">prerequisites</a> installed.
+            <p>Before you begin, be sure to have all the pre requisites installed.
               <br>This is the database that we are going to use for our tutorial:</p>
-            <img src="images/DBSchema.png" class="img-responsive">
+            <img
+            src="images/DBSchema.png" class="img-responsive">
               <p style="" draggable="true">
                 <br>Open a command prompt and navigate to the folder where your solution is
                 going to be located and run the following command
@@ -110,14 +113,14 @@
               <p>
                 <br>Once you see that growl shows that all the unit tests have passed, you
                 can navigate to http://localhost:3000/address</p>
-              <img src="images/demo2.png" class="img-responsive">
+              <img src="images/demo2.png"
+              class="img-responsive">
               <p draggable="true">
                 <br>You can repeat the process for all the tables in the database, or you
-                can download a sample project with all the entities and a script to create
-                the tables
-                <a href="https://github.com/pedro-ramirez-suarez/SampleModel">here</a>.
+                can download a sample project with all the entities and a script to create the tables <a href="https://github.com/pedro-ramirez-suarez/SampleModel">here</a>.
                 <br>Our sample project has some minor changes and a view model for users.</p>
-              <img src="images/demo3.png" class="img-responsive">
+              <img
+              src="images/demo3.png" class="img-responsive">
                 <p draggable="true">
                   <br>If you have all your entities in a separated project, don't forget to
                   add the reference to the web application and the test project, rebuild
@@ -152,11 +155,12 @@
                   <code>Templates</code>folder in the same folder that contains your solution.</p>
           </div>
         </div>
-        <a href="javascript:void(0)" class="btn btn-sm btn-primary" onclick="window.history.back()">Back</a>
-        <br>
-        <br>
+		<a href="javascript:void(0)" class="btn btn-sm btn-primary" onclick="window.history.back()">Back</a>
+		<br/>
+		<br/>
       </div>
-    </section>
-  
 
-</body></html>
+    </section>
+  </body>
+
+</html>
