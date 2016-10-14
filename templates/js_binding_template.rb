@@ -42,8 +42,7 @@ define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, momen
 
         add : function (element) {
             var that = this;
-
-            #{get_selectfrom_template(model, 'binding_search', '')}
+            
             #{get_datepicker_template(model, 'binding_add')}
             that.#{name}s.push(element);
         },
@@ -59,7 +58,7 @@ define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, momen
 
         rootElement: "#{@use_partial_views ? name_downcase+"_template" : ""}",
 
-        dateSelected: ko.observable()#{get_selectfrom_template(model, 'binding_init', '')}
+        dateSelected: ko.observable()
 
 
     };

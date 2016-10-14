@@ -46,14 +46,17 @@
               <a href="prerequisites.html">prerequisites</a>&nbsp;page and follow the links in that page.</p>
             <div>&nbsp;
               <br>
-              <br>
+              <ul>
+                <li><a href="#tutorial">Tutorial</a></li>
+                <li><a href="#commands">rawc available commands</a></li>
+                <li><a href="#modelsandviewmodels">Models and ViewModels</a></li>
+                <li><a href="#modelsandviewmodels">Data Access with Needletail</a></li>
+              </ul>
             </div>
-            <p></p>
-            <h3>A little background.</h3>
-            <br>
+                       
             <p style="">The framework takes a solution template as an starting point for your
               application, it's also required that you already have a database schema
-              defined, by convention the name of your new application should match the
+              defined on your SQLEXPRESS instance, by convention the name of your new application should match the
               name of the database, if you don't want it that way, you can modify all
               the conection strings present in two
               <code>appsettings.json</code>files located in the following folders:.
@@ -72,79 +75,150 @@
             lets you define how those relationships occur in the database.&nbsp;
             <br>
             <p></p>
-            <h3 draggable="true">Where to start</h3>
+            <a name="tutorial"></a>
+            <h3 draggable="true">Quick tutorial</h3>
             <p>Before you begin, be sure to have all the <a href="prerequisites.html">prerequisites</a> installed.
-              <br>This is the database that we are going to use for our tutorial:</p>
-            <img src="images/DBSchema.png" class="img-responsive">
+              <br>This is tutorial is based on the <a href="https://docs.asp.net/en/latest/data/ef-mvc/intro.html" target="_blank">Contoso University tutorial</a> by Microsoft.
+              <br>The database from the Contoso University tutorial from Microsoft is a little bit different to the one that we are going to use for this tutorial, the main difference is on some data types and that we use views to represent Students and Instructors instead of letting Entity Framework to automatically filter the data</p>
+              <p>Our DB Schema is represented in the following image:</p>
+            <img src="images/DBSchema.png" class="img-responsive"/>
               <p style="" draggable="true">
-                <br>Open a command prompt and navigate to the folder where your solution is
-                going to be located and run the following command
+                <br>Open a command prompt and navigate to a directory where your solution will be created, and run the following command:
                 <br>
                 <br>
-                <code>rawinit&nbsp;https://github.com/pedro-ramirez-suarez/rawtemplate scaff</code>
+                <code>rawc newApp</code>
                 <br>
-                <br>In this case "scaff" is the name of your solution, remember that by default
-                the application is going to look for a database named
-                <code>scaff</code>, a folder with the same name was created and contains everything
-                that you need to start building your application.</p>
-              <p>
-                <br>Type the following commands in the DOS shell:</p>
-              <code>cd scaff
-                <br>start scaff.sln
-                <br>rawf
-                <br>rawf server
-                <br>sidekick
                 <br>
-              </code>
+                A name for your app will be asked, in this case we will use "ConUniv" as the name, remember that by default
+                the scaffolding and the application is going to look for a database named as your solution's name on your local SQL Server Express instance, in this case is <code>ConUniv</code>, a folder with the same name as your application will
+                be created and contains everything  you need to start building your application. Type <code>cd ConUniv</code> and open the <b>ConUniv.sln</b> file with 
+                Visual Studio 2015 or open the folder <b>ConUniv.Web</b> with Visual Studio Code, this is the Solution structure that you will see:</p>
+                <img src="images/demo1.png" class="img-responsive"/>
               <br>
-              <p>Open a second command promopt and navigate to the folder where your solution
-                is located so you can start scaffolding your app. Type the following to
-                generate the model for the Address table:</p>
-              <code>rawf gen:model[Address]</code>
-              <p draggable="true">An Address class will be added to your web project, and your project has
-                been automatically built, the next step is to generate some repositories,
-                controllers and UI, type the following in the command line:</p>
-              <code>rawf gen:crudFor[Address]</code>
-              <p>You will see something like this:</p>
-              <img src="images/demo1.png" class="img-responsive">
+              <p>To start scaffolding we need to generate the models for the <b>tables</b> and <b>views</b> that we will be using, type the following commands to do it:</p>
+              <ul class="list-group" style="">
+                <li class="list-group-item"><code>rawc new:model[Course]</code></li>                
+                <li class="list-group-item"><code>rawc new:model[Instructor]</code></li>
+                <li class="list-group-item"><code>rawc new:model[Student]</code></li>
+                <li class="list-group-item"><code>rawc new:model[Department]</code></li>
+                <li class="list-group-item"><code>rawc new:model[CourseInstructor]</code></li>
+                <li class="list-group-item"><code>rawc new:model[Enrollment]</code></li>
+                <li class="list-group-item"><code>rawc new:model[OfficeAssignment]</code></li>
+              </ul>
+              <p>If you want to generate models for the whole database(only tables, not views) type the following command:</p>
+              <code>rawc new:full_db_models</code>
+              <p>Sometimes it's easier to generate all the models and then remove it the ones that you don't need.</p>
+              
+              <p>If you navigate to your solution, you will notice that the models were added to the <b>[ApplicationName].DataLayer</b> project, under the <code>Models</code> folder.
+              <br>
+              Open one of the models, <code>Department.cs</code> for instance, and you will see that the model's properties have been decorated with some attributes,   
+              </p>
+              <img src="images/demo2.png" class="img-responsive"/>
+              <p><br>
+                Those decorators are used <b>only</b> when the UI is generated, so if you want to change them, do it before you generate the UI.
+                <br>
+                <br>
+                We will change a couple of them now, edit the <code>Instructor</code> and the <code>Student</code> files, we will replace the attributes added to the <code>Discrimitator</code> field, 
+                we don't want the user to edit that field, so we replace them with the <code>Hidden</code> attribute, and the property in both classes should look like this:
+                <br>
+                <br>
+                <img src="images/demo2.1.png" class="img-responsive"/>
+              <br> 
+                For more information about all the available decorators go <a href="#modelsandviewmodels">here</a>.</p>
+              <br>
               <p>
-                <br>Once you see that growl shows that all the unit tests have passed, you
-                can navigate to http://localhost:3000/address</p>
-              <img src="images/demo2.png" class="img-responsive">
-              <p draggable="true">
-                <br>You can repeat the process for all the tables in the database, or you
-                can download a sample project with all the entities and a script to create
-                the tables
-                <a href="https://github.com/pedro-ramirez-suarez/SampleModel">here</a>.
-                <br>Our sample project has some minor changes and a view model for users.</p>
-              <img src="images/demo3.png" class="img-responsive">
-                <p draggable="true">
-                  <br>If you have all your entities in a separated project, don't forget to
-                  add the reference to the web application and the test project, rebuild
-                  your solution after you have added the reference.
-                  <br>
-                  <br>As you can see, the UserViewModel class has some interesting attributes
-                  that have been added to the User property, those attributes reflect how
-                  the data is related in the database and also how we want to show that in
-                  the UI, for more information about the attributes please check the Needletail.DataAccess
-                  documentation.
-                  <br>
-                  <br>ViewModels classes must be decorated with the
-                  <code>NeedletailViewModel</code>if you want to generate code for them, also
-                  you will be able to take advantage of some Nedletail built in functionality
-                  like Load and Save.
-                  <br>To generate code for view models, it's exactly the same as for normal
-                  entities, type the following in the console:</p>
-                <code>rawf gen:crudFor[UserViewModel]</code>
-                <p>You will see something like this:</p>
-                <img src="images/demo4.png" class="img-responsive">
+                At this point we could generate with the framework the controllers, repositories, views and javascript files that we need to have CRUD functionality for each one of the models, for isntance, the following command will generate all the code for the Course model:                 
+              </p>
+              <code>rawc crudFor[Course]</code>
+              <br>  
+              <br>
+              <p>
+                Most of modern web applications use ajax to get and push data to the server but scaffolding solutions don't implement ajax calls, also many .Net code generators use helpers like HTML helpers or the new Tag helpers for the UI, Tag helpers was a 
+                huge improvement from HTML helpers but still are not enough for a few reasons:
+                <ul>
+                  <li>The UI is technology dependant.</li>
+                  <li>Harder interaction between designers and developers.</li>
+                  <li>Page rendering is slower than pure html.</li>
+                </ul>
+                 The views generated by RAW framework are just html, so it's technology independant and facilitates team work between designers and developers, page rendering is faster and finally, the views(and everything) are generated based on templates that can be modified easily.
+                 <br><br>
+                 Another important thing about RAW framework is, that when developing real applications it's very rare that UI will use only one table, ViewModels are very popular developing Asp.Net MVC applications but frameworks in general or code generator supports them, but RAW does, also calls to access data are async calls so your application will be using the server resources more efficiently.   
+                <br>
+                 For this tutorial we are going to use ViewModels and generate the CRUD for it, but first we will need to generate the repositories, type the following commands to do it:
+                </p>
+              <ul class="list-group" style="">
+                <li class="list-group-item"><code>rawc new:repository[Course]</code></li>                
+                <li class="list-group-item"><code>rawc new:repository[Instructor]</code></li>
+                <li class="list-group-item"><code>rawc new:repository[Student]</code></li>
+                <li class="list-group-item"><code>rawc new:repository[Department]</code></li>
+                <li class="list-group-item"><code>rawc new:repository[CourseInstructor]</code></li>
+                <li class="list-group-item"><code>rawc new:repository[Enrollment]</code></li>
+                <li class="list-group-item"><code>rawc new:repository[OfficeAssignment]</code></li>
+              </ul>
+              <p>All the repositories were added to the <b>[ApplicationName].DataLayer</b> project, under the <code>Repositories</code> folder.
+              <br>
+              <p>
+                The repositories help us to interact with the database, we create a repository for each table or view that we want  
+                to interact with, repositories inherit from the <code>RepositoryBase</code> class and you can override any of it's methods if you need or you can modify the base class also.
+              </p>
+
+              <p>
+                At this point we can create our ViewModel, for convention we strongly suggest that all the ViewModels must be located in the <b>[ApplicationName].BusinessLayer</b> project, under the <code>ViewModels</code> folder.
+                <br>
+                <br>
+                Create these two ViewModels in the proper folder:
+              </p>
+              <img src="images/demo3.png" class="img-responsive"/>
+              <br>
+              <img src="images/demo4.png" class="img-responsive"/>
+              <p>
+                <br>
+                <br>
+                NOTE: Explain a little about the code and link to the attributes
+                <br>
+                We are ready to scaffold the ViewModels, type the following commands in the console:                
+              </p>
+              <ul class="list-group" style="">
+                <li class="list-group-item"><code>rawc new:crudFor[InstructorViewModel]</code></li>                
+                <li class="list-group-item"><code>rawc new:repository[DepartmentViewModel]</code></li>
+                <li class="list-group-item"><small>*Since we already created the Instructor and Department repositories we get a confirmation prompt to overwrite existing files.</small></li>
+                
+              </ul>
+              
+              
+              <p>
+                Before run the app, we are going to make a couple of small adjustments on two methods inside the <code>InstructorController</code> class, this changes are only for a better UX.
+                <br>
+                 If you remeber, we used the Autocomplete attribute in the <code>DepartmentViewModel</code> class, this attribute allows the user to select a record from a list of records that match a search criteria, in this example, we fill the InstructorID field but the user searches by the  instructor's FirstName, we will make an small adjustment so the user can also search by the LastName, to do this we need to change the <code>GetTextForAutocomplete</code> and <code>Search</code> methods in the <code>InstructorController</code> class, the new version of the methods should look like this:
+                 <br>
+                 <br>
+                 <img src="images/demo5.png" class="img-responsive"/>
+                <br>
+                <br>            
+              </p>
+              <p>
+                Run the app, on the home page you will see a couple of links to navigate to the Departments and Instructors generated functionality.   
+              </p>
+              <img src="images/demo6.png" class="img-responsive"/>
+              <br>
+              <br>
+              <p>
+                Go to Department list and edit one of the existing records, you will see comething like this:   
+              </p>
+              <img src="images/demo7.png" class="img-responsive"/>
+              <br>
+              <br>
+              <p>
+                Go to Instructor list and edit one of the existing records, you will see comething like this:   
+              </p>
+              <img src="images/demo8.png" class="img-responsive"/>
+              
+
                 <p contenteditable="true">
-                  <br>Wait for growl to show that all tests have pass, you can navigate now
-                  to
-                  <a href="#">http://localhost:3000/user</a>to see your application in action</p>
-                <img src="images/demo5.png" class="img-responsive">
-                <p>Note how in this screen data from different tables is displayed, all the
-                  data is loaded and saved automatically.</p>
+                  
+                <p>The generated views show data from more than one table, and with little changes in a small time we can do something like this:</p>
+                
+
                 <h3>Your code</h3>
                 <p>Use RAW Framework as an starting point, we encourage you to modify the
                   code and the templates to suit your needs. The templates used to generate

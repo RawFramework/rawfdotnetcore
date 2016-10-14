@@ -91,7 +91,7 @@ def get_fields_edit model
         elsif node.attribute('validator').to_s["bool"]
                 fields += @form_fields[:checkbox] %[property_name, property_name, "data-bind='checked: #{entity_name}#{property_name}'"]
         elsif node.at_css("SelectFrom")
-            fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom')
+            fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom'), entity_name
         elsif node.at_css("Autocomplete")
             fields += get_autocomplete_template model, node, 'edit_create' , node.attribute('Autocomplete')
         elsif node.at_css("HasOne")

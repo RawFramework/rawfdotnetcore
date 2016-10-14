@@ -23,7 +23,6 @@ define(['jquery', 'bootstrapValidator', 'moment', 'bootstrapDateTimePicker'], fu
 
             var $form = $(e.target);
 
-            #{get_selectfrom_template(model, 'validate_init', '')}
 
             #{get_datepicker_template(model, 'validate_use')}
 

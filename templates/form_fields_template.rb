@@ -7,7 +7,8 @@
                             data-bind='options: %s, 
                             optionsCaption: \"Choose one...\" , 
                             optionsText: function(item){return item.%s},
-                            value: $parent.selected%s'>
+                            optionsValue: function(item){return item.%s},
+                            value: %s'>
                             </select>
                         </div>
                     </div>

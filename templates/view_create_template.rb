@@ -76,7 +76,7 @@ def get_fields model
         next if node.attribute('validator').to_s["hidden"]
 
         if node.at_css("SelectFrom")
-            fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom')
+            fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom'), entity_name
         elsif node.at_css("Autocomplete")
             fields += get_autocomplete_template model, node, 'edit_create' , node.attribute('Autocomplete')
         elsif node.at_css("HasOne")
