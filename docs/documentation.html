@@ -62,22 +62,39 @@
              <div class="row">
                  <div class="col-md-12">
                   <div class="alert alert-warning" role="alert">
-                    <h4><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Important!</h4>
+                    <h4><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Important!</h4>
                     It's required that you already have a database schema
                     defined on your SQLEXPRESS instance, by convention the name of your new application should match the
                     name of the database, RAW framework by default will try to use Windows authentication to log in to the database, if you don't want it that way, you can modify
                     the conection strings present in two
-                    <code>appsettings.json</code> files located in the following folders:      
+                    <code>appsettings.json</code> files located in the following folders:
+                    <ul>
+                      <li>[ApplicationName].Web</li>
+                      <li>Generator</li>
+                    </ul>
                   </div>
                  </div>
-                 
                </div>
 
 
-            <ul>
-              <li>[ApplicationName].Web</li>
-              <li>Generator</li>
-            </ul>
+               <div class="row">
+                 <div class="col-md-12">
+                  <div class="alert alert-info" role="alert">
+                    <h4><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info</h4>
+                    
+                    A script to create the database schema and populate it with sample data can be found in the following url:
+                    <br>
+                    <a href="https://gist.github.com/pedro-ramirez-suarez/998013193eeacb3996eae1189b7a289b" target="_blank">https://gist.github.com/pedro-ramirez-suarez/998013193eeacb3996eae1189b7a289b</a>
+                    <br><br>
+                    A "finished" Contoso University with RAW project can be found in the following url:
+                    <br>
+                    <a href="https://github.com/RawFramework/ConUnivRaw" target="_blank">https://github.com/RawFramework/ConUnivRaw</a>
+                  </div>
+                 </div>
+               </div>
+
+
+            
             <br>All other similar frameworks forces you to have your model in the same
             project that your website, with RAW Framework you can have a separated
             proyect with all your entities.
@@ -92,7 +109,7 @@
             <p>Before you begin, be sure to have all the <a href="prerequisites.html">prerequisites</a> installed.
               <br>This is tutorial is based on the <a href="https://docs.asp.net/en/latest/data/ef-mvc/intro.html" target="_blank">Contoso University tutorial</a> by Microsoft.
               <br>The database from the Contoso University tutorial from Microsoft is a little bit different to the one that we are going to use for this tutorial, the main difference is on some data types and that we use views to represent Students and Instructors instead of letting Entity Framework to automatically filter the data</p>
-              <p>Our DB Schema is represented in the following image:</p>
+              <p>Our DB Schema is represented in the following image. A script to create the schema and sample data can be found <a href="https://gist.github.com/pedro-ramirez-suarez/998013193eeacb3996eae1189b7a289b" target="_blank">here</a></p>
             <img src="images/DBSchema.png" class="img-responsive"/>
               <p style="" draggable="true">
                 <br>Open a command prompt and navigate to a directory where your solution will be created, and run the following command:
@@ -131,10 +148,13 @@
                 <br>
                 <br>
                 We will change a couple of them now, edit the <code>Instructor</code> and the <code>Student</code> files, we will replace the attributes added to the <code>Discrimitator</code> field, 
-                we don't want the user to edit that field, so we replace them with the <code>Hidden</code> attribute, and the property in both classes should look like this:
+                we don't want the user to edit that field, so we replace them with the <code>Hidden</code> attribute and we will make the property readonly, the property in both classes should look like this respectively:
                 <br>
                 <br>
                 <img src="images/demo2.1.png" class="img-responsive"/>
+                <br>
+                <br>
+                <img src="images/demo2.2.png" class="img-responsive"/>
               <br> 
                 For more information about all the available decorators go <a href="#modelsandviewmodels">here</a>.</p>
               <br>
@@ -320,6 +340,11 @@
                   <code>rawc build</code>
                   <br>
                   This command will build the application.
+                </li>
+                <li class="list-group-item">
+                  <code>rawc run</code>
+                  <br>
+                  This command will run the application on <a href="http://localhost:5000" target="_blank">http://localhost:5000</a>
                 </li>
                 <li class="list-group-item">
                   <code>rawc help</code>
@@ -518,14 +543,16 @@
                  <div class="col-md-12">
                   <div class="alert alert-info" role="alert">
                     <h4><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info</h4>
-                    Needletail DataAccess is an independent Micro ORM nuget package to access SQL server databases,The project is located <a href="https://github.com/pedro-ramirez-suarez/needletail_dotnet_core" target="_blank" style="color:black">here.</a> 
+                    Needletail DataAccess is an independent Micro ORM nuget package to access SQL server databases, the most important feature of this library is the speed.
+                    <br>
+                    The project is located <a href="https://github.com/pedro-ramirez-suarez/needletail_dotnet_core" target="_blank" style="color:black">here.</a> 
                   </div>
                  </div>                 
                </div>
                
               <p>For this sample, we are going to use the Northwind database that can be downloaded from <a href="http://www.microsoft.com/download/en/details.aspx?id=23654" target="_blank"> here</a>.</p>
-              <p>There are going to be the models:</p>
-              <p><code>
+              <p>These are going to be the models for the samples:</p>
+              <code>
               <pre>public class Order
 {
       [TableKey(CanInsertKey = false)]
@@ -555,7 +582,7 @@ public class OrderDetails
 }
 
               </pre>
-              </code></p>
+              </code>
               <p><span style="font-size: x-small;">*The [TableKey] attribute indicates which field/property is the primary key in the database, you need to indicate if the primary key is&nbsp; automatically created using the &ldquo;CanInsertKey&rdquo; variable.</span></p>
               <p>To access the Orders table we need to instantiate an object indicating the connection string and the table.</p>
               <p><code>
@@ -567,8 +594,13 @@ using (var needleTailContext = new DBTableDataSourceBase&lt;order, int &gt;("con
 }
               </pre>
               </code></p>
-              <p>You don't need to indicate if the database is MSSQL, SQL CE or MySQL, Needletail will take care of that.</p>
+              
               <h3>Using Needletail DataAccess</h3>
+              <p>
+                Samples of the most common methods:
+                <br>
+                <small>*  There are also methods to execute stored procedures and execute scalar.</small>
+              </p>
               <p><code>
               <pre>//Get all rows
 var orders = needleTailContext.GetAll();
@@ -600,8 +632,8 @@ var items = needleTailContext.Join("Orders.OrderID,Orders.CustomerID,Orders.Orde
 var items = needleTailContext.JoinGetTyped&lt;orderdetailsjoin&gt;("Orders.OrderID,Orders.CustomerID,Orders.OrderDate,[Order Details].ProductID,[Order Details].UnitPrice,[Order Details].Quantity","Inner Join [Order Details] on Orders.OrderID = [Order Details].OrderID AND Orders.CustomerID like '%INE%'", string.Empty,string.Empty, null);
               </pre>
               </code></p>
-              <p>All the methods have their <code>Async</code> version.</p>
-              <h5>Filters for queries</h5>
+              <p>All the methods have their <code>Async</code> version and a few overloads.</p>
+              <h4>Filters for queries</h4>
               <p>The following are prefixes and suffixes that you can add to the field name in the <code>where</code></p>
               <ul>
               <li>_EndsWith example:<code>var ordersS = needleTailContext.GetMany(where: new { CustomerID_EndsWith = "LIN" });</code></li>
