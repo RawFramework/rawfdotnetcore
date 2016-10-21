@@ -73,6 +73,9 @@
                       <li>[ApplicationName].Web</li>
                       <li>Generator</li>
                     </ul>
+                    And then run the following command:
+                    <br>
+                    <code>rawc buildGen</code>
                   </div>
                  </div>
                </div>
@@ -280,6 +283,10 @@
                   <div class="alert alert-info" role="alert">
                     <h4><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Remember</h4>
                     By default RAW Framework tries to connect to a local SQL server Express instance using windows authentication.
+                    <br>
+                    If you change the connection strings run the following command:
+                    <br>
+                    <code>rawc buildGen</code>
                   </div>
                  </div>
                  
@@ -341,6 +348,13 @@
                   <code>rawc build</code>
                   <br>
                   This command will build the application.
+                </li>
+                <li class="list-group-item">
+                  <code>rawc buildGen</code>
+                  <br>
+                  This command will build the Generator.
+                  <br>
+                  <strong>* Use this command when you change the connection strings</strong>
                 </li>
                 <li class="list-group-item">
                   <code>rawc run</code>
