@@ -94,7 +94,7 @@ def get_fields model
 
 end
 
-def get_shared_layout name
+def get_shared_layout entity_name
 return <<template
 @{
         ViewBag.page = "#{entity_name}";
