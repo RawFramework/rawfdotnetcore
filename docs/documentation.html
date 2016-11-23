@@ -64,10 +64,9 @@
                  <div class="col-md-12">
                   <div class="alert alert-warning" role="alert">
                     <h4><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Important!</h4>
-                    It's required that you already have a database schema
-                    defined on your SQLEXPRESS instance, by convention the name of your new application should match the
-                    name of the database, RAW framework by default will try to use Windows authentication to log in to the database, if you don't want it that way, you can modify
-                    the conection strings present in two
+                    It's required that you already have a database schema defined on a SQL Server instance, by default the application tries to connect to <code>localhost\\SQLEXPRESS</code>  
+                    by convention the name of your new application should match the  name of the database, RAW framework by default will try to use Windows authentication 
+                    to log in to the database, if you don't want it that way, you can modify the connection strings present in two
                     <code>appsettings.json</code> files located in the following folders:
                     <ul>
                       <li>[ApplicationName].Web</li>
@@ -76,6 +75,8 @@
                     And then run the following command:
                     <br>
                     <code>rawc buildGen</code>
+                    <br><br>
+                    SQL Server on <code>Linux</code> and <code>Docker</code> is supported, just update the connection strings mentioned above.
                   </div>
                  </div>
                </div>
@@ -88,11 +89,24 @@
                     
                     A script to create the database schema and populate it with sample data can be found in the following url:
                     <br>
-                    <a href="https://gist.github.com/pedro-ramirez-suarez/998013193eeacb3996eae1189b7a289b" target="_blank">https://gist.github.com/pedro-ramirez-suarez/998013193eeacb3996eae1189b7a289b</a>
+                    <a href="https://gist.github.com/pedro-ramirez-suarez/998013193eeacb3996eae1189b7a289b" target="_blank" style="color:black;">https://gist.github.com/pedro-ramirez-suarez/998013193eeacb3996eae1189b7a289b</a>
                     <br><br>
                     A "finished" Contoso University with RAW project can be found in the following url:
                     <br>
-                    <a href="https://github.com/RawFramework/ConUnivRaw" target="_blank">https://github.com/RawFramework/ConUnivRaw</a>
+                    <a href="https://github.com/RawFramework/ConUnivRaw" target="_blank" style="color:black;">https://github.com/RawFramework/ConUnivRaw</a>
+                  </div>
+                 </div>
+               </div>
+
+
+               <div class="row">
+                 <div class="col-md-12">
+                  <div class="alert alert-success" role="alert">
+                    <h4><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Upgrade to .Net Core 1.1</h4>
+                    The template uses by default .Net Core 1.0.1, if you want, you can upgrade the application to .Net Core 1.1, just follow the intructions in the following link:
+                    <br>
+                    <br>
+                    <a href="https://blogs.msdn.microsoft.com/webdev/2016/11/16/announcing-asp-net-core-1-1/" target="_blank" style="color:black;">https://blogs.msdn.microsoft.com/webdev/2016/11/16/announcing-asp-net-core-1-1/</a>
                   </div>
                  </div>
                </div>
