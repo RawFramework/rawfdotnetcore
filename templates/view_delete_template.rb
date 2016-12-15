@@ -1,7 +1,7 @@
 def view_delete_template name
     name_downcase = name.downcase
 return <<template
-<div id="#{name_downcase}_template">
+<div id="#{name_downcase}_template" class="hidden">
     #{@use_partial_views ? "" : get_shared_layout(name)}
 
     <h2>Delete</h2>

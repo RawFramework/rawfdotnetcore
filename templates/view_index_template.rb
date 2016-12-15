@@ -6,7 +6,7 @@ def view_index_template model, use_bs_grid = false
     grid_container = "<div id='bs_grid_#{name_downcase}'></div>"
 
 return <<template
-<div id="#{name_downcase}_template">
+<div id="#{name_downcase}_template" class="hidden">
     #{@use_partial_views ? "" : get_shared_layout(name)}
 
     <input type="hidden" id="refresh" value="no">
@@ -28,7 +28,7 @@ return <<template
                     #{format_properties(model, 'index')}
                     appViewModel.add(item);
                 });
-
+                $("##{name_downcase}_template").removeClass('hidden');
                 utils.spinner.hide();
             });
         });

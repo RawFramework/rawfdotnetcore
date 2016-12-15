@@ -6,7 +6,7 @@ def view_details_template model
     name_downcase = name.downcase
 
 return <<template
-<div id="#{name_downcase}_template">
+<div id="#{name_downcase}_template" class="hidden">
     #{@use_partial_views ? "" : get_shared_layout(name)}
 
     <input type="hidden" id="refresh" value="no">
@@ -39,7 +39,7 @@ return <<template
                 var model = ajaxResult.#{name_downcase};
                 #{format_properties(model)}
                 appViewModel.add(model);
-
+                $("##{name_downcase}_template").removeClass('hidden');
                 utils.spinner.hide();
             });
         });

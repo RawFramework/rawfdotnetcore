@@ -5,7 +5,7 @@ name = entity_name
 name_downcase = name.downcase
 
 return <<template
-<div id="#{name_downcase}_template">
+<div id="#{name_downcase}_template" class="hidden">
     #{@use_partial_views ? "" : get_shared_layout(name)}
 
     <div class="page-header text-center">
@@ -48,7 +48,7 @@ return <<template
                         }
                     });
                 });
-
+                $("##{name_downcase}_template").removeClass('hidden');
                 utils.spinner.hide();
             });
 
@@ -94,7 +94,7 @@ def get_fields model
 
 end
 
-def get_shared_layout entity_name
+def get_shared_layout name
 return <<template
 @{
         ViewBag.page = "#{entity_name}";
