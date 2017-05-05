@@ -2,7 +2,7 @@ def view_index_template model, use_bs_grid = false
     name = model['name']
     name_downcase = name.downcase
 
-    grid_file = ", '/wwwroot/js/app/#{name}.grid.js'"
+    grid_file = ", '/js/app/#{name}.grid.js'"
     grid_container = "<div id='bs_grid_#{name_downcase}'></div>"
 
 return <<template
